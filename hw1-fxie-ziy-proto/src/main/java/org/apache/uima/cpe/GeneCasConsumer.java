@@ -18,21 +18,12 @@
  */
 
 package org.apache.uima.cpe;
-/* 
- *******************************************************************************************
- * N O T E :     The XML format (XCAS) that this Cas Consumer outputs, is eventually 
- *               being superceeded by the more standardized and compact XMI format.  However
- *               it is used currently as the expected form for remote services, and there is
- *               existing tooling for doing stand-alone component development and debugging 
- *               that uses this format to populate an initial CAS.  So it is not 
- *               deprecated yet;  it is also being kept for compatibility with older versions.
- *               
- *               New code should consider using the XmiWriterCasConsumer where possible,
- *               which uses the current XMI format for XML externalizations of the CAS
- *******************************************************************************************               
- */
+
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -43,6 +34,7 @@ import org.apache.uima.cas.FSIterator;
 import org.apache.uima.cas.impl.XCASSerializer;
 import org.apache.uima.collection.CasConsumer_ImplBase;
 import org.apache.uima.examples.SourceDocumentInformation;
+import org.apache.uima.genetypesystem.id;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceProcessException;
@@ -60,7 +52,7 @@ import org.xml.sax.SAXException;
  * 
  * 
  */
-public class XCasWriterCasConsumer extends CasConsumer_ImplBase {
+public class GeneCasConsumer extends CasConsumer_ImplBase {
   /**
    * Name of configuration parameter that must be set to the path of a directory into which the
    * output files will be written.
@@ -68,15 +60,24 @@ public class XCasWriterCasConsumer extends CasConsumer_ImplBase {
   public static final String PARAM_OUTPUTDIR = "OutputDirectory";
 
   private File mOutputDir;
-
-  private int mDocNum;
+  private File outputFile;
+  FileWriter fw = null;
+  BufferedWriter bw = null;
 
   public void initialize() throws ResourceInitializationException {
-    mDocNum = 0;
+
     mOutputDir = new File((String) getConfigParameterValue(PARAM_OUTPUTDIR));
     if (!mOutputDir.exists()) {
-      mOutputDir.mkdirs();
+      mOutputDir.mkdir();
     }
+    outputFile = new File(mOutputDir, "hw1.out");
+    try {
+      fw = new FileWriter(outputFile, true);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    bw = new BufferedWriter(fw); 
   }
 
   /**
@@ -100,61 +101,28 @@ public class XCasWriterCasConsumer extends CasConsumer_ImplBase {
     }
 
     // retreive the filename of the input file from the CAS
-    FSIterator it = jcas.getAnnotationIndex(SourceDocumentInformation.type).iterator();
-    File outFile = null;
-    if (it.hasNext()) {
-      SourceDocumentInformation fileLoc = (SourceDocumentInformation) it.next();
-      File inFile;
-      try {
-        inFile = new File(new URL(fileLoc.getUri()).getPath());
-        String outFileName = inFile.getName();
-        if (fileLoc.getOffsetInSource() > 0) {
-          outFileName += fileLoc.getOffsetInSource();
-        }
-        outFile = new File(mOutputDir, outFileName);
-      } catch (MalformedURLException e1) {
-        // invalid URL, use default processing below
-      }
-    }
-    if (outFile == null) {
-      outFile = new File(mOutputDir, "doc" + mDocNum++);
-    }
-    // serialize XCAS and write to output file
-    try {
-      writeXCas(jcas.getCas(), outFile);
-    } catch (IOException e) {
-      throw new ResourceProcessException(e);
-    } catch (SAXException e) {
-      throw new ResourceProcessException(e);
-    }
+    FSIterator it = jcas.getAnnotationIndex(id.type).iterator();
+    String outputString = new String();
+     while (it.hasNext()) {
+      id geneid = (id) it.next();
+      int a = geneid.getBegin();
+      int b = geneid.getEnd();
+      String context = geneid.getId();
+      String header = context.substring(0, context.indexOf(" ") );
+      String test1 = context.substring(header.length() + a, header.length() +  b + 1);
+      outputString = outputString + header + "|" + a + " " + b + "|"+ test1 + "\r\n"; 
+     }
+     try {
+       writeToFile(outputString, outputFile);
+     } catch (IOException e) {
+       // TODO Auto-generated catch block
+       e.printStackTrace();
+     }
   }
 
-  /**
-   * Serialize a CAS to a file in XCAS format
-   * 
-   * @param aCas
-   *          CAS to serialize
-   * @param name
-   *          output file
-   * 
-   * @throws IOException
-   *           if an I/O failure occurs
-   * @throws SAXException
-   *           if an error occurs generating the XML text
-   */
-  private void writeXCas(CAS aCas, File name) throws IOException, SAXException {
-    FileOutputStream out = null;
-
-    try {
-      out = new FileOutputStream(name);
-      XCASSerializer ser = new XCASSerializer(aCas.getTypeSystem());
-      XMLSerializer xmlSer = new XMLSerializer(out, false);
-      ser.serialize(aCas, xmlSer.getContentHandler());
-    } finally {
-      if (out != null) {
-        out.close();
-      }
-    }
+ 
+  private void writeToFile(String outputline, File name) throws IOException {
+      bw.write(outputline);
   }
 
 }

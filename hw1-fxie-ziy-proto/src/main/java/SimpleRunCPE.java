@@ -62,15 +62,15 @@ public class SimpleRunCPE extends Thread {
     mStartTime = System.currentTimeMillis();
 
     // check command line args
- /*   if (args.length < 1) {
+    if (args.length < 1) {
       printUsageMessage();
       System.exit(1);
-    }*/
+    }
 
     // parse CPE descriptor
     System.out.println("Parsing CPE Descriptor");
     CpeDescription cpeDesc = UIMAFramework.getXMLParser().parseCpeDescription(
-            new XMLInputSource("/Users/virgil/Documents/workspace/hw1-fxie/src/main/resources/CpeDescriptor.xml"));
+            new XMLInputSource(args[0]));
     // instantiate CPE
     System.out.println("Instantiating CPE");
     mCPE = UIMAFramework.produceCollectionProcessingEngine(cpeDesc);

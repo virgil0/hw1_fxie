@@ -24,7 +24,7 @@
         </casProcessor>
     <casProcessor deployment="integrated" name="Gene Consumer">
             <descriptor>
-                <import location="../resources/XmlWriterCasConsumer.xml"/>
+                <import location="../resources/GeneCasConsumer.xml"/>
             </descriptor>
             <deploymentParameters/>
             <filter></filter>
