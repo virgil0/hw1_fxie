@@ -42,7 +42,7 @@ public class GeneIDAnnotator extends JCasAnnotator_ImplBase {
     Chunking chunking = null;
     
    String docText = aJCas.getDocumentText();
-   String input;
+   String input = null;
     int index;
     
    // id annotation1 = new id(aJCas);
@@ -51,22 +51,22 @@ public class GeneIDAnnotator extends JCasAnnotator_ImplBase {
    if((index = docText.indexOf(" ")) != -1)
     {
       input = docText.substring(index +1, docText.length());
+      
       chunking = chunker.chunk(input);
-  //    System.out.println("Chunking=" + chunking);
     }
    
      Iterator<Chunk> it = chunking.chunkSet().iterator();
      
-    // System.out.println("Rank          Span    Type     Phrase");
      id annotation0= null; 
      for (int n = 0; it.hasNext(); ++n) {
        Chunk chunk = it.next();
-       double conf = Math.pow(2.0, chunk.score());
+     //  double conf = Math.pow(2.0, chunk.score());
        int start = chunk.start();
        int end = chunk.end();
+       
        //String phrase = args[i].substring(start, end);
        
-       System.out.println(n + "       (" + start + ", " + end + ")       " + chunk.type() + " " + conf);
+    //   System.out.println(n + "       (" + start + ", " + end + ")       " + chunk.type() + " " + conf);
           //     + "         " + phrase + " " + conf);
        annotation0 = new id(aJCas);
        annotation0.setBegin(start);
