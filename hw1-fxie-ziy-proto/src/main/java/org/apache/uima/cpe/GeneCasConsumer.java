@@ -101,9 +101,12 @@ public class GeneCasConsumer extends CasConsumer_ImplBase {
     }
 
     // retreive the filename of the input file from the CAS
+    int flag = 0;
     FSIterator it = jcas.getAnnotationIndex(id.type).iterator();
     String outputString = new String();
+  
      while (it.hasNext()) {
+       flag++;
       id geneid = (id) it.next();
       int a = geneid.getBegin();
       int b = geneid.getEnd();
@@ -112,16 +115,19 @@ public class GeneCasConsumer extends CasConsumer_ImplBase {
       String test1 = context.substring(header.length() + a, header.length() +  b + 1);
       outputString = outputString + header + "|" + a + " " + b + "|"+ test1 + "\r\n"; 
      }
-     try {
-       writeToFile(outputString, outputFile);
-     } catch (IOException e) {
-       // TODO Auto-generated catch block
-       e.printStackTrace();
+     if (flag >0)
+     {
+       try {
+         writeToFile(outputString, outputFile);
+       } catch (IOException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+       }
      }
   }
 
- 
   private void writeToFile(String outputline, File name) throws IOException {
+      System.out.println("|" + outputline + "|");
       bw.write(outputline);
   }
 

@@ -57,7 +57,7 @@ public class GeneIDAnnotator extends JCasAnnotator_ImplBase {
        int end = chunk.end();
        //String phrase = args[i].substring(start, end);
        
-    //   System.out.println(n + "       (" + start + ", " + end + ")       " + chunk.type() + " " + conf);
+       System.out.println(n + "       (" + start + ", " + end + ")       " + chunk.type() + " " + conf);
           //     + "         " + phrase + " " + conf);
        annotation0 = new id(aJCas);
        annotation0.setBegin(start);
