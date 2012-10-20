@@ -82,29 +82,8 @@ public class GeneCollectionReader extends CollectionReader_ImplBase {
       // TODO Auto-generated catch block
       e.printStackTrace();
     } 
-    // get list of files in the specified directory, and subdirectories if the
-    // parameter PARAM_SUBDIR is set to True
- //   mFiles = new ArrayList<File>();
-    //addFilesFromDir(directory);
   }
-  
-  /**
-   * This method adds files in the directory passed in as a parameter to mFiles.
-   * If mRecursive is true, it will include all files in all
-   * subdirectories (recursively), as well. 
-   * 
-   * @param dir
-   */
-  /*private void addFilesFromDir(File dir) {
-    File[] files = dir.listFiles();
-    for (int i = 0; i < files.length; i++) {
-      if (!files[i].isDirectory()) {
-        mFiles.add(files[i]);
-      } else if (mRecursive) {
-        addFilesFromDir(files[i]);
-      }
-    }
-  }*/
+ 
 
   /**
    * @see org.apache.uima.collection.CollectionReader#hasNext()

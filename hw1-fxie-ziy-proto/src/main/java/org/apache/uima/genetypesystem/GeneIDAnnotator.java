@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 
+import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_component.JCasAnnotator_ImplBase;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.resource.ResourceInitializationException;
 
 import com.aliasi.chunk.Chunk;
 import com.aliasi.chunk.Chunker;
@@ -14,15 +16,10 @@ import com.aliasi.chunk.Chunking;
 import com.aliasi.util.AbstractExternalizable;
 
 public class GeneIDAnnotator extends JCasAnnotator_ImplBase {
+  private Chunker chunker = null;
   
-  /**
-   * @see JCasAnnotator_ImplBase#process(JCas)
-   */
-  public void process(JCas aJCas) {
-    
+  public void initialize(UimaContext aContext) throws ResourceInitializationException {
     File modelFile = new File(System.getProperty("user.dir") + "/src/main/resources/ne-en-bio-genetag.HmmChunker");
-    Chunker chunker = null;
-    Chunking chunking = null;
     try {
       chunker = (Chunker) AbstractExternalizable.readObject(modelFile);
     } catch (IOException e) {
@@ -32,6 +29,18 @@ public class GeneIDAnnotator extends JCasAnnotator_ImplBase {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+  }
+  public void initialize()
+  {
+     
+    }
+  
+  /**
+   * @see JCasAnnotator_ImplBase#process(JCas)
+   */
+  public void process(JCas aJCas) {
+    Chunking chunking = null;
+    
    String docText = aJCas.getDocumentText();
    String input;
     int index;
