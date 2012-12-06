@@ -19,7 +19,8 @@ public class GeneIDAnnotator extends JCasAnnotator_ImplBase {
   private Chunker chunker = null;
   
   public void initialize(UimaContext aContext) throws ResourceInitializationException {
-    File modelFile = new File(System.getProperty("user.dir") + "/src/main/resources/ne-en-bio-genetag.HmmChunker");
+   // File modelFile = new File(System.getProperty("user.dir") + "/src/main/resources/ne-en-bio-genetag.HmmChunker");
+    File modelFile = new File("./ne-en-bio-genetag.HmmChunker");
     try {
       chunker = (Chunker) AbstractExternalizable.readObject(modelFile);
     } catch (IOException e) {
