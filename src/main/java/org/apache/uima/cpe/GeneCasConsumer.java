@@ -63,18 +63,18 @@ public class GeneCasConsumer extends CasConsumer_ImplBase {
    */
   public static final String PARAM_OUTPUTDIR = "OutputDirectory";
 
-  private File mOutputDir;
+ // private File mOutputDir;
   private File outputFile;
   FileWriter fw = null;
   BufferedWriter bw = null;
 
   public void initialize() throws ResourceInitializationException {
 
-    mOutputDir = new File((String) getConfigParameterValue(PARAM_OUTPUTDIR));
+ /*   mOutputDir = new File((String) getConfigParameterValue(PARAM_OUTPUTDIR));
     if (!mOutputDir.exists()) {
       mOutputDir.mkdir();
-    }
-    outputFile = new File(mOutputDir, "hw1.out");
+    }*/
+    outputFile = new File((String) getConfigParameterValue(PARAM_OUTPUTDIR));
     try {
       fw = new FileWriter(outputFile, false);
     } catch (IOException e) {
