@@ -46,7 +46,7 @@
 		    <nameValuePair>
 		        <name>InputDirectory</name>
 		        <value>
-		            <string>hw1.in</string>
+		            <string>../hw1.in</string>
 		        </value>
 		    </nameValuePair>
             <nameValuePair>
