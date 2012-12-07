@@ -20,7 +20,7 @@
       <nameValuePair>
         <name>OutputDirectory</name>
         <value>
-          <string></string>
+          <string>hw1.out</string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
