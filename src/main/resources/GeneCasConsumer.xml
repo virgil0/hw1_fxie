@@ -20,7 +20,7 @@
       <nameValuePair>
         <name>OutputDirectory</name>
         <value>
-          <string>temp-uima-output</string>
+          <string></string>
         </value>
       </nameValuePair>
     </configurationParameterSettings>
